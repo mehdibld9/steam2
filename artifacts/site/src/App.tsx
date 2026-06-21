@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Switch, Route, Router as WouterRouter, Link, useLocation } from "wouter";
 import DownloadPage from "./pages/DownloadPage";
 import KeyPage from "./pages/KeyPage";
@@ -18,7 +17,6 @@ function Nav() {
 
 function AppShell() {
   const { adBlockDetected, checked } = useAdBlockDetection();
-  const [dismissed, setDismissed] = useState(false);
 
   return (
     <>
@@ -27,8 +25,8 @@ function AppShell() {
         <Route path="/" component={DownloadPage} />
         <Route path="/key" component={KeyPage} />
       </Switch>
-      {checked && adBlockDetected && !dismissed && (
-        <AdBlockModal onDismiss={() => setDismissed(true)} />
+      {checked && adBlockDetected && (
+        <AdBlockModal />
       )}
     </>
   );

@@ -16,18 +16,20 @@ export default function DownloadPage() {
 
         <div className="stagger-2" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
           <a
-            href="#"
+            href="https://www.mediafire.com/file/hyq8v22gp8owiav/steam-v1.2.rar/file"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-fancy btn-fancy-primary"
-            onClick={(e) => e.preventDefault()}
           >
             <ExternalLink size={16} />
             Link
           </a>
 
           <a
-            href="#"
+            href="https://mega.nz/file/Td12kDyR#ZCEITV-0ZV3phajIKleelCUn6o15OhgnbUGGgLgjXrM"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-fancy-secondary"
-            onClick={(e) => e.preventDefault()}
           >
             <ExternalLink size={16} />
             Mirror

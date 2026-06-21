@@ -16,19 +16,21 @@ export default function KeyPage() {
 
         <div className="stagger-2" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
           <a
-            href="#"
+            href="https://link-hub.net/1058391/XKcipSsYUiJs"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-fancy btn-fancy-primary"
             style={{ "--glow-color": "rgba(129, 140, 248, 0.4)" } as React.CSSProperties}
-            onClick={(e) => e.preventDefault()}
           >
             <ExternalLink size={16} />
             Link
           </a>
 
           <a
-            href="#"
+            href="https://tpi.li/zcKcgIA02v"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-fancy-secondary"
-            onClick={(e) => e.preventDefault()}
           >
             <ExternalLink size={16} />
             Mirror
