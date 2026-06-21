@@ -12,9 +12,6 @@ function Nav() {
       <Link href="/" className={`nav-btn${location === "/" ? " active" : ""}`}>
         Download
       </Link>
-      <Link href="/key" className={`nav-btn${location === "/key" ? " active" : ""}`}>
-        Get Key
-      </Link>
     </nav>
   );
 }
