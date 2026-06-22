@@ -1,5 +1,12 @@
 import { ShieldX, RefreshCw } from "lucide-react";
 
+const BRAVE_PASS_KEY = "_bp";
+
+function handleReload() {
+  sessionStorage.setItem(BRAVE_PASS_KEY, "1");
+  window.location.reload();
+}
+
 export default function AdBlockModal() {
   return (
     <div style={{
@@ -93,7 +100,7 @@ export default function AdBlockModal() {
         </ol>
 
         <button
-          onClick={() => window.location.reload()}
+          onClick={handleReload}
           className="btn-fancy btn-fancy-primary"
           style={{ width: "100%", background: "transparent", border: "none", cursor: "pointer", marginTop: "0.25rem" }}
         >
