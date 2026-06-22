@@ -1,4 +1,4 @@
-import { Download, ExternalLink } from "lucide-react";
+import { Download, ExternalLink, Sparkles } from "lucide-react";
 
 export default function DownloadPage() {
   return (
@@ -38,6 +38,17 @@ export default function DownloadPage() {
 
         <div className="stagger-3" style={{ fontSize: "0.72rem", letterSpacing: "0.08em", color: "rgba(255,255,255,0.18)", textTransform: "uppercase", marginTop: "0.5rem" }}>
           Choose your preferred source
+        </div>
+
+        <div className="stagger-3" style={{ marginTop: "0.5rem" }}>
+          <button
+            onClick={() => {}}
+            className="btn-fancy-secondary"
+            style={{ opacity: 0.5, cursor: "default", pointerEvents: "none", border: "none", background: "transparent" }}
+          >
+            <Sparkles size={15} />
+            Make your own page
+          </button>
         </div>
       </div>
     </div>
