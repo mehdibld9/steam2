@@ -19,6 +19,23 @@ async function checkIsBrave(): Promise<boolean> {
   return false;
 }
 
+// Method 1: Fetch a universally-blocked external ad URL
+async function testExternalAdUrl(): Promise<boolean> {
+  try {
+    const res = await fetch(
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?cb=" + Date.now(),
+      { method: "HEAD", mode: "no-cors", cache: "no-store" }
+    );
+    // no-cors always returns opaque response — if the request was blocked
+    // by the extension the fetch itself throws before we get here
+    void res;
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+// Method 2: Self-hosted bait file (name matches common filter lists)
 async function testBaitFile(): Promise<boolean> {
   try {
     const base = import.meta.env.BASE_URL ?? "/";
@@ -32,31 +49,40 @@ async function testBaitFile(): Promise<boolean> {
   }
 }
 
+// Method 3: Bait DOM element — CSS cosmetic hiding
 function testBaitElement(): Promise<boolean> {
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     try {
       const bait = document.createElement("div");
-      bait.className = "ads ad adsbox doubleclick ad-placement textads";
+      bait.className = "ads ad adsbox doubleclick ad-placement textads sponsor";
       bait.setAttribute("id", "AdSense");
-      bait.innerHTML = "&nbsp;";
       bait.style.cssText =
-        "position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;pointer-events:none;";
+        "display:block;position:absolute;top:-9999px;left:-9999px;width:10px;height:10px;";
       document.body.appendChild(bait);
 
-      await new Promise((r) => setTimeout(r, 150));
-
-      const rect = bait.getBoundingClientRect();
-      const style = window.getComputedStyle(bait);
-      const hidden =
-        rect.height === 0 ||
-        rect.width === 0 ||
-        style.display === "none" ||
-        style.visibility === "hidden" ||
-        style.opacity === "0" ||
-        bait.offsetParent === null;
-
-      document.body.removeChild(bait);
-      resolve(hidden);
+      setTimeout(() => {
+        try {
+          // Check if blocker removed the element from DOM entirely
+          if (!document.body.contains(bait)) {
+            resolve(true);
+            return;
+          }
+          const style = window.getComputedStyle(bait);
+          const rect = bait.getBoundingClientRect();
+          const hidden =
+            style.display === "none" ||
+            style.visibility === "hidden" ||
+            style.opacity === "0" ||
+            parseInt(style.height) === 0 ||
+            parseInt(style.width) === 0 ||
+            rect.height === 0 ||
+            rect.width === 0;
+          document.body.removeChild(bait);
+          resolve(hidden);
+        } catch {
+          resolve(true);
+        }
+      }, 200);
     } catch {
       resolve(true);
     }
@@ -64,11 +90,14 @@ function testBaitElement(): Promise<boolean> {
 }
 
 async function isAdBlocked(): Promise<boolean> {
-  const [baitFile, baitElement] = await Promise.all([
+  // Run all three methods in parallel — any positive = blocked
+  const [externalUrl, baitFile, baitElement] = await Promise.all([
+    testExternalAdUrl(),
     testBaitFile(),
     testBaitElement(),
   ]);
-  return baitFile || baitElement;
+  console.debug("[AdBlock] externalUrl:", externalUrl, "baitFile:", baitFile, "baitElement:", baitElement);
+  return externalUrl || baitFile || baitElement;
 }
 
 export function useAdBlockDetection() {
