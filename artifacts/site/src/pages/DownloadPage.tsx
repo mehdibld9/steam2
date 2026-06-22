@@ -16,7 +16,7 @@ export default function DownloadPage() {
 
         <div className="stagger-2" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
           <a
-            href="https://www.mediafire.com/file/hyq8v22gp8owiav/steam-v1.2.rar/file"
+            href="https://www.mediafire.com/file/7yk3j8hvvykrju9/steam-ch-v1.2.rar/file"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-fancy btn-fancy-primary"
@@ -26,7 +26,7 @@ export default function DownloadPage() {
           </a>
 
           <a
-            href="https://mega.nz/file/Td12kDyR#ZCEITV-0ZV3phajIKleelCUn6o15OhgnbUGGgLgjXrM"
+            href="https://mega.nz/folder/edsEzY4K#pglQl98gEWXCoIumZLymoA"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-fancy-secondary"
