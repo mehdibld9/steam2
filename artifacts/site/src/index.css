@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --font-sans: var(--app-font-sans);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  --background: 0 0% 5%;
+  --foreground: 0 0% 95%;
+  --border: 0 0% 15%;
+  --primary: 210 100% 60%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 55%;
+  --app-font-sans: 'Inter', 'Segoe UI', sans-serif;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--app-font-sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+
+/* Animated gradient glow button */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.3), 0 0 60px 8px rgba(59, 130, 246, 0.1); }
+  50% { box-shadow: 0 0 30px 6px rgba(59, 130, 246, 0.5), 0 0 80px 16px rgba(59, 130, 246, 0.2); }
+}
+
+@keyframes border-spin {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+  0% { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.page-enter {
+  animation: fade-in-scale 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.btn-fancy {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  text-decoration: none;
+  color: #fff;
+  isolation: isolate;
+  min-width: 180px;
+}
+
+.btn-fancy::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #60a5fa, #818cf8, #3b82f6, #1d4ed8);
+  background-size: 300% 100%;
+  animation: border-spin 3s linear infinite;
+  z-index: -2;
+}
+
+.btn-fancy::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: calc(0.6rem - 2px);
+  background: #0a0a0f;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+.btn-fancy:hover::after {
+  background: #0f172a;
+}
+
+.btn-fancy:hover {
+  transform: translateY(-2px);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.btn-fancy:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.btn-fancy-primary {
+  background: transparent;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.btn-fancy-secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  outline: none;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.75);
+  transition: all 0.2s ease;
+  min-width: 180px;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+}
+
+.btn-fancy-secondary:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.08);
+  color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.1);
+}
+
+.btn-fancy-secondary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.nav-btn {
+  position: relative;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: rgba(255,255,255,0.45);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-btn:hover {
+  border-color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-btn.active {
+  border-color: rgba(59, 130, 246, 0.7);
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+}
+
+.stagger-1 { animation: float-up 0.5s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stagger-2 { animation: float-up 0.5s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stagger-3 { animation: float-up 0.5s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stagger-4 { animation: float-up 0.5s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
