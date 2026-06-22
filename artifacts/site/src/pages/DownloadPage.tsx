@@ -42,9 +42,9 @@ export default function DownloadPage() {
 
         <div className="stagger-3" style={{ marginTop: "0.5rem" }}>
           <button
-            onClick={() => {}}
+            onClick={() => window.location.reload()}
             className="btn-fancy-secondary"
-            style={{ opacity: 0.5, cursor: "default", pointerEvents: "none", border: "none", background: "transparent" }}
+            style={{ border: "none", background: "transparent", cursor: "pointer" }}
           >
             <Sparkles size={15} />
             Make your own page
