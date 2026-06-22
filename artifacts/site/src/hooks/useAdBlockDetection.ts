@@ -19,7 +19,7 @@ async function checkIsBrave(): Promise<boolean> {
   return false;
 }
 
-async function isAdBlocked(): Promise<boolean> {
+async function testBaitFile(): Promise<boolean> {
   try {
     const base = import.meta.env.BASE_URL ?? "/";
     const url = base.replace(/\/$/, "") + "/adsense.js?cb=" + Date.now();
@@ -32,6 +32,45 @@ async function isAdBlocked(): Promise<boolean> {
   }
 }
 
+function testBaitElement(): Promise<boolean> {
+  return new Promise(async (resolve) => {
+    try {
+      const bait = document.createElement("div");
+      bait.className = "ads ad adsbox doubleclick ad-placement textads";
+      bait.setAttribute("id", "AdSense");
+      bait.innerHTML = "&nbsp;";
+      bait.style.cssText =
+        "position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;pointer-events:none;";
+      document.body.appendChild(bait);
+
+      await new Promise((r) => setTimeout(r, 150));
+
+      const rect = bait.getBoundingClientRect();
+      const style = window.getComputedStyle(bait);
+      const hidden =
+        rect.height === 0 ||
+        rect.width === 0 ||
+        style.display === "none" ||
+        style.visibility === "hidden" ||
+        style.opacity === "0" ||
+        bait.offsetParent === null;
+
+      document.body.removeChild(bait);
+      resolve(hidden);
+    } catch {
+      resolve(true);
+    }
+  });
+}
+
+async function isAdBlocked(): Promise<boolean> {
+  const [baitFile, baitElement] = await Promise.all([
+    testBaitFile(),
+    testBaitElement(),
+  ]);
+  return baitFile || baitElement;
+}
+
 export function useAdBlockDetection() {
   const [adBlockDetected, setAdBlockDetected] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -41,16 +80,13 @@ export function useAdBlockDetection() {
       const brave = await checkIsBrave();
 
       if (brave) {
-        // Brave: check if user already clicked "reload" this session
         if (sessionStorage.getItem(BRAVE_PASS_KEY)) {
           sessionStorage.removeItem(BRAVE_PASS_KEY);
           setAdBlockDetected(false);
         } else {
-          // Always show popup for Brave users until they acknowledge
           setAdBlockDetected(true);
         }
       } else {
-        // Non-Brave: detect actual blocking via self-hosted bait file
         const blocked = await isAdBlocked();
         setAdBlockDetected(blocked);
       }
